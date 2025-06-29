@@ -7,6 +7,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import { MutualFund } from '../types';
 import { searchMutualFunds } from '../services/api';
 import { Search, TrendingUp } from 'lucide-react';
+import EnvDebug from '../components/EnvDebug';
 
 const HomePage: React.FC = () => {
   const [searchResults, setSearchResults] = useState<MutualFund[]>([]);
@@ -44,6 +45,9 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* For development debugging only - remove before final deployment */}
+      {import.meta.env.DEV && <EnvDebug />}
+      
       <div className="bg-gradient-to-r from-blue-600 to-emerald-600 text-white pb-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
           <div className="text-center">

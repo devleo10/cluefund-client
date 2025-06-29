@@ -6,7 +6,10 @@ export const authAPI = {
   login: async (email: string, password: string) => {
     try {
       console.log('Attempting login with:', { email, password: '***' });
+      console.log('API Base URL:', BASE_URL);
       const url = `${BASE_URL}/auth/login`;
+      console.log('Full login URL:', url);
+      
       const response = await fetch(url, {
         method: 'POST',
         headers: {
