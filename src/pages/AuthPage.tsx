@@ -415,9 +415,6 @@ const AuthPage: React.FC = () => {
                       <input type="checkbox" className="rounded border-slate-600 bg-slate-800 text-blue-500 focus:ring-blue-500" />
                       <span className="ml-2 text-slate-300">Remember me</span>
                     </label>
-                    <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors">
-                      Forgot password?
-                    </a>
                   </div>
                 )}
 
@@ -450,10 +447,7 @@ const AuthPage: React.FC = () => {
                       <CheckCircle className="h-4 w-4 text-emerald-400 mr-2" />
                       Real-time market updates
                     </div>
-                    <div className="flex items-center text-sm text-slate-300">
-                      <CheckCircle className="h-4 w-4 text-emerald-400 mr-2" />
-                      AI-powered investment insights
-                    </div>
+
                   </div>
                 </div>
               )}
