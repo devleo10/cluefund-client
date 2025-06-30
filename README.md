@@ -1,5 +1,6 @@
 # Cluefund - Smart Mutual Fund Tracker (Client)
 
+![App Screenshot](img.png)
 [![React](https://img.shields.io/badge/React-18.x-61dafb)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-38bdf8)](https://tailwindcss.com/)
