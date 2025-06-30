@@ -7,8 +7,6 @@
 
 A modern, responsive web application for tracking mutual funds in real-time. This repository contains the frontend code for the Cluefund application.
 
-![Cluefund Screenshot](https://via.placeholder.com/800x400?text=Cluefund+Screenshot)
-
 ## Features
 
 - **User Authentication**: Secure login and registration system
