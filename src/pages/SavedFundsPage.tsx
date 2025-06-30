@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bookmark, Trash2, Search, AlertCircle } from 'lucide-react';
 import { useSavedFunds } from '../context/SavedFundsContext';
@@ -12,10 +12,28 @@ const SavedFundsPage: React.FC = () => {
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [removingFund, setRemovingFund] = useState<number | null>(null);
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (searchTimerRef.current) {
+      clearTimeout(searchTimerRef.current);
+    }
+
+    searchTimerRef.current = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300); 
+
+    return () => {
+      if (searchTimerRef.current) {
+        clearTimeout(searchTimerRef.current);
+      }
+    };
+  }, [searchQuery]);
 
   const filteredFunds = savedFunds.filter(fund =>
-    fund.schemeName.toLowerCase().includes(searchQuery.toLowerCase())
+    fund.schemeName.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
   );
 
   const handleFundClick = (fund: any) => {

@@ -1,14 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
   isLoading?: boolean;
+  debounceTime?: number;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading, debounceTime = 500 }) => {
   const [query, setQuery] = useState('');
+  const [debouncedValue, setDebouncedValue] = useState('');
+  const timerRef = useRef<number | null>(null);
 
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    timerRef.current = setTimeout(() => {
+      setDebouncedValue(query);
+    }, debounceTime);
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [query, debounceTime]);
+  
+  const onSearchRef = useRef(onSearch);
+  
+  useEffect(() => {
+    onSearchRef.current = onSearch;
+  }, [onSearch]);
+  
+  useEffect(() => {
+    if (debouncedValue.trim()) {
+      onSearchRef.current(debouncedValue.trim());
+    } else if (debouncedValue === '') {
+      onSearchRef.current('');
+    }
+  }, [debouncedValue]); 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
@@ -18,6 +50,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading }) => {
 
   const clearSearch = () => {
     setQuery('');
+    setDebouncedValue('');
     onSearch('');
   };
 

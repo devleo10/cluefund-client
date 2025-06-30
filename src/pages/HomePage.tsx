@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
 import FundCard from '../components/FundCard';
@@ -15,7 +15,8 @@ const HomePage: React.FC = () => {
   const [hasSearched, setHasSearched] = useState(false);
   const navigate = useNavigate();
 
-  const handleSearch = async (query: string) => {
+  // Use useCallback to memoize the handleSearch function
+  const handleSearch = useCallback(async (query: string) => {
     if (!query) {
       setSearchResults([]);
       setHasSearched(false);
@@ -23,7 +24,10 @@ const HomePage: React.FC = () => {
       return;
     }
 
-    setIsLoading(true);
+    if (searchResults.length === 0) {
+      setIsLoading(true);
+    }
+    
     setError(null);
     setHasSearched(true);
 
@@ -36,7 +40,7 @@ const HomePage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []); // Empty dependency array to prevent recreating on every render
 
   const handleFundClick = (fund: MutualFund) => {
     navigate(`/fund/${fund.schemeCode}`, { state: { fund } });
