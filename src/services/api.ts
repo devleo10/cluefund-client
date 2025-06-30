@@ -5,11 +5,7 @@ const MF_API_URL = import.meta.env.VITE_MF_API_URL;
 export const authAPI = {
   login: async (email: string, password: string) => {
     try {
-      console.log('Attempting login with:', { email, password: '***' });
-      console.log('API Base URL:', BASE_URL);
       const url = `${BASE_URL}/auth/login`;
-      console.log('Full login URL:', url);
-      
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -17,29 +13,24 @@ export const authAPI = {
         },
         body: JSON.stringify({ email, password }),
       });
-      console.log('Login response status:', response.status);
+      
       let responseData;
       try {
         responseData = await response.json();
       } catch (jsonError) {
-        // If response is not JSON, log and throw a clearer error
-        const text = await response.text();
-        console.error('Login response not JSON:', text);
+        // If response is not JSON, throw a clearer error
         throw new Error('Login failed: Invalid server response');
       }
-      console.log('Login response data:', responseData);
       
       // Handle non-200 responses by throwing an error
       if (!response.ok) {
         // Extract the error message from the response
         const errorMessage = responseData.message || `HTTP error! status: ${response.status}`;
-        console.error('Login error from server:', errorMessage);
         
         // If it's invalid credentials, make it very explicit
         if (response.status === 400 && 
             (errorMessage.includes('Invalid credentials') || 
              errorMessage.includes('invalid credentials'))) {
-          console.error('Invalid credentials detected, throwing specific error');
           throw new Error('Invalid credentials - please check your email and password');
         }
         
@@ -48,7 +39,6 @@ export const authAPI = {
       
       return responseData;
     } catch (error) {
-      console.error('Login error in API (caught):', error);
       // Re-throw to be handled by the AuthContext
       throw error;
     }
@@ -56,7 +46,6 @@ export const authAPI = {
 
   register: async (name: string, email: string, password: string) => {
     try {
-      console.log('Attempting registration with:', { name, email, password: '***' });
       const url = `${BASE_URL}/auth/register`;
       const response = await fetch(url, {
         method: 'POST',
@@ -65,26 +54,22 @@ export const authAPI = {
         },
         body: JSON.stringify({ name, email, password }),
       });
-      console.log('Register response status:', response.status);
+      
       let responseData;
       try {
         responseData = await response.json();
       } catch (jsonError) {
-        // If response is not JSON, log and throw a clearer error
-        const text = await response.text();
-        console.error('Register response not JSON:', text);
+        // If response is not JSON, throw a clearer error
         throw new Error('Registration failed: Invalid server response');
       }
-      console.log('Register response data:', responseData);
+      
       if (!response.ok) {
         // Extract the error message from the response
         const errorMessage = responseData.message || `HTTP error! status: ${response.status}`;
-        console.error('Registration error from server:', errorMessage);
         throw new Error(errorMessage);
       }
       return responseData;
     } catch (error) {
-      console.error('Registration error in API:', error);
       // Re-throw to be handled by the AuthContext
       throw error;
     }
@@ -110,7 +95,6 @@ export const authAPI = {
 export const fundAPI = {
   saveFund: async (token: string, fundData: { schemeCode: number; schemeName: string }) => {
     try {
-      console.log('Saving fund:', fundData);
       const response = await fetch(`${BASE_URL}/fund/save`, {
         method: 'POST',
         headers: {
@@ -124,7 +108,6 @@ export const fundAPI = {
       });
 
       const responseData = await response.json();
-      console.log('Save fund response:', responseData);
 
       if (!response.ok) {
         throw new Error(responseData.message || 'Failed to save fund');
@@ -132,7 +115,6 @@ export const fundAPI = {
 
       return responseData;
     } catch (error) {
-      console.error('Save fund error:', error);
       throw error;
     }
   },
@@ -154,7 +136,6 @@ export const fundAPI = {
 
       return await response.json();
     } catch (error) {
-      console.error('Get saved funds error:', error);
       throw error;
     }
   },
@@ -177,7 +158,6 @@ export const fundAPI = {
 
       return await response.json();
     } catch (error) {
-      console.error('Remove fund error:', error);
       throw error;
     }
   },
@@ -197,7 +177,6 @@ export const searchMutualFunds = async (query: string): Promise<any[]> => {
       fund.schemeName.toLowerCase().includes(query.toLowerCase())
     ).slice(0, 20); // Limit to 20 results for better performance
   } catch (error) {
-    console.error('Error searching mutual funds:', error);
     throw error;
   }
 };
@@ -210,7 +189,6 @@ export const getMutualFundDetails = async (schemeCode: number): Promise<any> => 
     }
     return await response.json();
   } catch (error) {
-    console.error('Error fetching mutual fund details:', error);
     throw error;
   }
 };

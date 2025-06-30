@@ -89,14 +89,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       // If we get here, something went wrong but no exception was thrown
       const errorMsg = response?.message || 'Login failed';
-      console.error('Login error in AuthContext (no exception):', errorMsg);
       return { success: false, error: errorMsg };
     } catch (error: any) {
       // Handle thrown exceptions
-      console.error('Login error in AuthContext (exception):', error);
       // Make sure to extract the message from the error
       const errorMessage = error.message || 'Network error occurred. Please check your connection and try again.';
-      console.log('Returning error from login:', errorMessage);
       return { 
         success: false, 
         error: errorMessage
@@ -130,14 +127,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       // If we get here, something went wrong but no exception was thrown
       const errorMsg = response?.message || 'Registration failed';
-      console.error('Register error in AuthContext (no exception):', errorMsg);
       return { success: false, error: errorMsg };
     } catch (error: any) {
       // Handle thrown exceptions
-      console.error('Register error in AuthContext (exception):', error);
       // Make sure to extract the message from the error
       const errorMessage = error.message || 'Network error occurred. Please check your connection and try again.';
-      console.log('Returning error from register:', errorMessage);
       return { 
         success: false, 
         error: errorMessage

@@ -29,19 +29,15 @@ const AuthPage: React.FC = () => {
     password: '',
     confirmPassword: ''
   });
-  // Add local toast state
   const [localToast, setLocalToast] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
 
   const { login, register, isLoading } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
-  // Function to show a local toast message
   const showLocalToast = (message: string, type: 'success' | 'error' = 'success') => {
-    console.log(`Showing local toast: ${message} (${type})`);
     setLocalToast({ message, type });
-    // Clear the toast after a few seconds
-    setTimeout(() => setLocalToast(null), 4000); // Match the global toast duration
+    setTimeout(() => setLocalToast(null), 4000); 
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,9 +53,8 @@ const AuthPage: React.FC = () => {
     e.preventDefault();
     setError('');
     setShowExistingUserPrompt(false);
-    setLocalToast(null); // Clear any existing toast
+    setLocalToast(null);
 
-    // Basic validation
     if (!formData.email || !formData.password) {
       const msg = 'Please fill in all required fields';
       setError(msg);
@@ -96,10 +91,8 @@ const AuthPage: React.FC = () => {
         const successMsg = isLogin ? 'Login successful!' : 'Registration successful!';
         showToast(successMsg, 'success');
         showLocalToast(successMsg, 'success');
-        // Delay navigation so toast is visible
         setTimeout(() => navigate('/'), 1000);
       } else {
-        // Check if the error is about user already existing
         if (!isLogin && result.error && (
           result.error.toLowerCase().includes('user already exists') ||
           result.error.toLowerCase().includes('email already exists') ||
@@ -108,38 +101,25 @@ const AuthPage: React.FC = () => {
           setShowExistingUserPrompt(true);
           setError('');
         } else {
-          // Show the error message from backend (e.g., Invalid credentials)
           const msg = result.error || 'Authentication failed';
           const cleanMsg = msg.replace(/^error:?/i, '').trim();
           
-          console.log('Authentication error to display:', cleanMsg);
-          
-          // Set form error state
           setError(cleanMsg);
           
-          // Force toast to show by triggering in the next tick
           setTimeout(() => {
             showToast(cleanMsg, 'error');
             showLocalToast(cleanMsg, 'error');
-            console.log('Toast triggered for:', cleanMsg);
           }, 10);
         }
       }
     } catch (err: any) {
-      console.error('Auth error:', err);
       const errorMsg = err.message || 'An unexpected error occurred';
       
-      // Set form error state
       setError(errorMsg);
       
-      // Force toast to show by triggering in the next tick
       setTimeout(() => {
-        // Show both toast notifications
         showToast(errorMsg, 'error');
         showLocalToast(errorMsg, 'error');
-        
-        // Log for debugging
-        console.log('Displaying error toast for:', errorMsg);
       }, 10);
     }
   };
@@ -158,19 +138,8 @@ const AuthPage: React.FC = () => {
     setShowExistingUserPrompt(false);
   };
 
-  // Debug effect for monitoring error state
-  useEffect(() => {
-    if (error) {
-      console.log('Error state changed:', error);
-    }
-  }, [error]);
-
-  // Debug effect for monitoring toast visibility
-  useEffect(() => {
-    if (localToast) {
-      console.log('Local toast is active:', localToast);
-    }
-  }, [localToast]);
+  // Remove the debug effect for monitoring error state
+  // Remove the debug effect for monitoring toast visibility
 
   // For development/testing purposes, show a toast when the component mounts
   useEffect(() => {
@@ -178,7 +147,6 @@ const AuthPage: React.FC = () => {
     const testToasts = () => {
       const error = new URLSearchParams(window.location.search).get('error');
       if (error) {
-        console.log('Showing error toast from URL param:', error);
         setTimeout(() => {
           showToast(error, 'error');
           showLocalToast(error, 'error');
@@ -187,7 +155,7 @@ const AuthPage: React.FC = () => {
     };
     
     testToasts();
-  }, [showToast, showLocalToast]);
+  }, [showToast]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 relative overflow-hidden">

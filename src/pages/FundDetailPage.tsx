@@ -76,7 +76,7 @@ const FundDetailPage: React.FC = () => {
         await saveFund(fundToSave);
       }
     } catch (error) {
-      console.error('Error saving fund:', error);
+      // Handle error silently
     } finally {
       setIsSaving(false);
     }

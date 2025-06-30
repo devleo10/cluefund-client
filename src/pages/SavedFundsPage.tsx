@@ -38,7 +38,6 @@ const SavedFundsPage: React.FC = () => {
         showToast('Mutual fund removed from portfolio', 'success');
       } catch (error) {
         showToast('Failed to remove fund', 'error');
-        console.error('Error removing fund:', error);
       } finally {
         setRemovingFund(null);
       }
